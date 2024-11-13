@@ -9,7 +9,7 @@ import {
 import { useState } from "react";
 import { useRouter } from "expo-router";
 import { SIZES, COLORS } from "../../../constants";
-import { PopulsrJobCard } from "../../common/cards/popular/PopularJobCard";
+import PopularJobCard from "../../common/cards/popular/PopularJobCard";
 
 import styles from "./popularjobs.style";
 
@@ -26,12 +26,18 @@ const Popularjobs = () => {
         </TouchableOpacity>
       </View>
       <View styles={styles.cardsContainer}>
-        {isLoading ? (
-          <ActivityIndicator size="large" color={COLORS.primary} />
-        ) : error ? (
+        {isLoading && <ActivityIndicator size="large" color={COLORS.primary} />}
+        {!isLoading && error && (
           <Text style={styles.error}>An error occurred</Text>
-        ) : (
-          <FlatList />
+        )}
+        {!isLoading && !error && (
+          <FlatList
+            data={[1, 2, 3, 4, 5]}
+            renderItem={({ item }) => <PopularJobCard item={item} />}
+            keyExtractor={(item) => item?.job_id}
+            contentContainerStyle={{ columnGap: SIZES.medium }}
+            horizontal
+          />
         )}
       </View>
     </View>
